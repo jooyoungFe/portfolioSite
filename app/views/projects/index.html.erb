@@ -1,0 +1,131 @@
+<% content_for :title, "프로젝트 | Career Portfolio" %>
+
+<!-- Page title -->
+<section class="page-hero">
+  <div class="container page-hero__inner">
+    <div>
+      <p class="eyebrow">04 · 프로젝트</p>
+      <h1>프로젝트 보관함</h1>
+    </div>
+    <p>프로젝트 설명과 결과 파일을 직접 등록할 수 있습니다.</p>
+  </div>
+</section>
+
+<!-- Upload form -->
+<section class="section">
+  <div class="container project-layout">
+    <div class="upload-panel">
+      <div class="section-heading section-heading--compact">
+        <p class="eyebrow">새 기록</p>
+        <h2>프로젝트 추가</h2>
+      </div>
+
+      <% if @project.errors.any? %>
+        <div class="form-errors">
+          <strong>입력 내용을 확인해 주세요.</strong>
+          <ul>
+            <% @project.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: @project, class: "project-form" do |form| %>
+        <div class="field">
+          <%= form.label :title, "프로젝트명" %>
+          <%= form.text_field :title, placeholder: "예: 진로 포트폴리오 웹사이트" %>
+        </div>
+
+        <div class="field">
+          <%= form.label :description, "프로젝트 설명" %>
+          <%= form.text_area :description, rows: 6, placeholder: "무엇을 만들었고 어떤 역할을 했는지 적어 주세요." %>
+        </div>
+
+        <div class="field">
+          <%= form.label :tech_stack, "사용 기술" %>
+          <%= form.text_field :tech_stack, placeholder: "Ruby, Rails, ERB, SCSS" %>
+        </div>
+
+        <div class="field">
+          <%= form.label :files, "결과 파일" %>
+          <div class="file-drop">
+            <%= form.file_field :files, multiple: true, direct_upload: true %>
+            <p>이미지, PDF, 문서, ZIP 등 최대 5개 · 파일당 20MB</p>
+          </div>
+        </div>
+
+        <%= form.submit "프로젝트 등록", class: "button button--primary button--full" %>
+      <% end %>
+    </div>
+
+    <aside class="upload-guide">
+      <span class="label">함께 보관하면 좋은 자료</span>
+      <h3>결과물뿐 아니라<br>과정도 기록해 두세요.</h3>
+      <ul class="check-list">
+        <li>발표 자료 PDF</li>
+        <li>결과 화면 이미지</li>
+        <li>소스 코드 ZIP</li>
+        <li>보고서 또는 활동 기록</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- Project list -->
+<section class="section section--muted">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">목록</p>
+      <h2>등록한 프로젝트</h2>
+    </div>
+
+    <% if @projects.any? %>
+      <div class="project-list">
+        <% @projects.each do |project| %>
+          <article class="project-card">
+            <div class="project-card__top">
+              <div>
+                <span class="project-card__date"><%= project.created_at.strftime("%Y.%m.%d") %></span>
+                <h3><%= project.title %></h3>
+              </div>
+
+              <%= button_to "삭제", project_path(project), method: :delete,
+                    class: "text-button",
+                    form: { data: { turbo_confirm: "이 프로젝트를 삭제할까요?" } } %>
+            </div>
+
+            <div class="project-card__description"><%= simple_format(project.description) %></div>
+
+            <% if project.tech_stack.present? %>
+              <div class="tag-list">
+                <% project.tech_stack.split(",").each do |tech| %>
+                  <span><%= tech.strip %></span>
+                <% end %>
+              </div>
+            <% end %>
+
+            <% if project.files.attached? %>
+              <div class="file-list">
+                <% project.files.each do |file| %>
+                  <%= link_to rails_blob_path(file, disposition: "attachment"), class: "file-item" do %>
+                    <div>
+                      <strong><%= file.filename %></strong>
+                      <span><%= number_to_human_size(file.byte_size) %></span>
+                    </div>
+                    <span aria-hidden="true">↓</span>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <strong>아직 등록된 프로젝트가 없습니다.</strong>
+        <p>위 폼에서 첫 프로젝트와 결과 파일을 등록해 보세요.</p>
+      </div>
+    <% end %>
+  </div>
+</section>

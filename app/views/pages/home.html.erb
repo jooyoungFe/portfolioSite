@@ -1,0 +1,60 @@
+<% content_for :title, "홈 | Career Portfolio" %>
+
+<section class="hero" style="background-image: url('<%= asset_path("portfolio-workspace.jpg") %>')">
+  <div class="hero__shade" aria-hidden="true"></div>
+  <div class="container hero__inner">
+    <div class="hero__content">
+      <p class="hero__meta">2026 · 학생 진로 기록</p>
+      <h1>진로<br>포트폴리오</h1>
+      <p class="hero__description">
+        안녕하세요. 웹 개발에 관심이 있는 <strong>박주영</strong>입니다.
+        팀로그에서 직접 웹 서비스를 만들고 있으며, 별도로 악성코드 분석을 공부하고 있습니다.
+      </p>
+      <div class="hero__actions">
+        <%= link_to "소개 읽기", profile_path, class: "button button--light" %>
+        <%= link_to "프로젝트 보기 →", projects_path, class: "text-link text-link--light" %>
+      </div>
+    </div>
+
+    <dl class="hero__facts">
+      <div><dt>관심 분야</dt><dd>웹 개발 · 악성코드 분석</dd></div>
+      <div><dt>희망 진로</dt><dd>모의해커</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section portfolio-map">
+  <div class="container portfolio-map__layout">
+    <div class="section-heading portfolio-map__heading">
+      <p class="eyebrow">목차</p>
+      <h2>저를 설명하는<br>네 가지 기록</h2>
+      <p>관심에서 시작해 활동과 결과물로 이어진 과정을 모았습니다.</p>
+    </div>
+
+    <nav class="portfolio-index" aria-label="포트폴리오 목차">
+      <%= link_to profile_path, class: "portfolio-index__item" do %>
+        <span class="portfolio-index__number">01</span>
+        <span class="portfolio-index__copy"><strong>나에 대하여</strong><small>소개, 강점, 가치관</small></span>
+        <span class="portfolio-index__arrow" aria-hidden="true">→</span>
+      <% end %>
+
+      <%= link_to career_path, class: "portfolio-index__item" do %>
+        <span class="portfolio-index__number">02</span>
+        <span class="portfolio-index__copy"><strong>진로 탐색</strong><small>관심 분야, 직업과 학과</small></span>
+        <span class="portfolio-index__arrow" aria-hidden="true">→</span>
+      <% end %>
+
+      <%= link_to skills_path, class: "portfolio-index__item" do %>
+        <span class="portfolio-index__number">03</span>
+        <span class="portfolio-index__copy"><strong>활동과 기술</strong><small>동아리, 협업, 사용 기술</small></span>
+        <span class="portfolio-index__arrow" aria-hidden="true">→</span>
+      <% end %>
+
+      <%= link_to projects_path, class: "portfolio-index__item" do %>
+        <span class="portfolio-index__number">04</span>
+        <span class="portfolio-index__copy"><strong>프로젝트 보관함</strong><small>과정, 결과물, 첨부 파일</small></span>
+        <span class="portfolio-index__arrow" aria-hidden="true">→</span>
+      <% end %>
+    </nav>
+  </div>
+</section>

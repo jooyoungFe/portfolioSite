@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title><%= content_for(:title) || "Career Portfolio" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%= render "shared/header" %>
+
+    <% if notice.present? %>
+      <div class="flash flash--notice"><%= notice %></div>
+    <% end %>
+
+    <main class="main">
+      <%= yield %>
+    </main>
+
+    <%= render "shared/footer" %>
+  </body>
+</html>

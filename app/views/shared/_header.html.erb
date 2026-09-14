@@ -1,0 +1,16 @@
+<header class="header">
+  <div class="container header__inner">
+    <%= link_to root_path, class: "brand" do %>
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span>박주영의 기록</span>
+    <% end %>
+
+    <nav class="nav" aria-label="주요 메뉴">
+      <%= nav_link "홈", root_path %>
+      <%= nav_link "소개", profile_path %>
+      <%= nav_link "진로", career_path %>
+      <%= nav_link "활동과 기술", skills_path %>
+      <%= nav_link "프로젝트", projects_path %>
+    </nav>
+  </div>
+</header>
