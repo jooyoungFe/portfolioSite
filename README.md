@@ -78,3 +78,19 @@ bin/rails dartsass:watch
 개발 환경 파일은 Rails의 `storage/` 아래에 저장됩니다.
 
 공개 서버에 배포할 경우에는 로그인/관리자 인증을 추가하는 편이 안전합니다. 현재 구조는 포트폴리오 과제 및 로컬 데모를 기준으로 해서 누구나 프로젝트 등록과 삭제를 할 수 있습니다.
+
+## Render 배포
+
+이 앱은 운영 환경에서도 SQLite와 로컬 Active Storage를 사용하며, 기본적으로 둘 다 `storage/` 아래에 저장됩니다. Render에서 데이터와 업로드 파일을 재배포 후에도 유지하려면 유료 Web Service에 Persistent Disk를 추가하고 Mount Path를 다음과 같이 설정하세요.
+
+```text
+/opt/render/project/src/storage
+```
+
+Start Command는 다음과 같이 설정할 수 있습니다.
+
+```bash
+bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0
+```
+
+Persistent Disk가 없더라도 앱은 실행되지만, Render의 임시 파일 시스템 특성상 재배포 또는 재시작 시 운영 데이터와 업로드 파일이 사라질 수 있습니다. 별도 경로를 사용하는 경우 `DATABASE_PATH`와 `STORAGE_ROOT` 환경 변수로 각각 지정할 수 있습니다.
