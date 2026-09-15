@@ -15,47 +15,70 @@
 <section class="section">
   <div class="container project-layout">
     <div class="upload-panel">
-      <div class="section-heading section-heading--compact">
-        <p class="eyebrow">새 기록</p>
-        <h2>프로젝트 추가</h2>
-      </div>
-
-      <% if @project.errors.any? %>
-        <div class="form-errors">
-          <strong>입력 내용을 확인해 주세요.</strong>
-          <ul>
-            <% @project.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
-      <%= form_with model: @project, class: "project-form" do |form| %>
-        <div class="field">
-          <%= form.label :title, "프로젝트명" %>
-          <%= form.text_field :title, placeholder: "예: 진로 포트폴리오 웹사이트" %>
-        </div>
-
-        <div class="field">
-          <%= form.label :description, "프로젝트 설명" %>
-          <%= form.text_area :description, rows: 6, placeholder: "무엇을 만들었고 어떤 역할을 했는지 적어 주세요." %>
-        </div>
-
-        <div class="field">
-          <%= form.label :tech_stack, "사용 기술" %>
-          <%= form.text_field :tech_stack, placeholder: "Ruby, Rails, ERB, SCSS" %>
-        </div>
-
-        <div class="field">
-          <%= form.label :files, "결과 파일" %>
-          <div class="file-drop">
-            <%= form.file_field :files, multiple: true, direct_upload: true %>
-            <p>이미지, PDF, 문서, ZIP 등 최대 5개 · 파일당 20MB</p>
+      <% if portfolio_admin? %>
+        <div class="admin-heading">
+          <div class="section-heading section-heading--compact">
+            <p class="eyebrow">새 기록</p>
+            <h2>프로젝트 추가</h2>
           </div>
+
+          <%= button_to "관리자 로그아웃", admin_session_path, method: :delete,
+                class: "text-button" %>
         </div>
 
-        <%= form.submit "프로젝트 등록", class: "button button--primary button--full" %>
+        <% if @project.errors.any? %>
+          <div class="form-errors">
+            <strong>입력 내용을 확인해 주세요.</strong>
+            <ul>
+              <% @project.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= form_with model: @project, class: "project-form" do |form| %>
+          <div class="field">
+            <%= form.label :title, "프로젝트명" %>
+            <%= form.text_field :title, placeholder: "예: 진로 포트폴리오 웹사이트" %>
+          </div>
+
+          <div class="field">
+            <%= form.label :description, "프로젝트 설명" %>
+            <%= form.text_area :description, rows: 6, placeholder: "무엇을 만들었고 어떤 역할을 했는지 적어 주세요." %>
+          </div>
+
+          <div class="field">
+            <%= form.label :tech_stack, "사용 기술" %>
+            <%= form.text_field :tech_stack, placeholder: "Ruby, Rails, ERB, SCSS" %>
+          </div>
+
+          <div class="field">
+            <%= form.label :files, "결과 파일" %>
+            <div class="file-drop">
+              <%= form.file_field :files, multiple: true %>
+              <p>이미지, PDF, 문서, ZIP 등 최대 5개 · 파일당 20MB</p>
+            </div>
+          </div>
+
+          <%= form.submit "프로젝트 등록", class: "button button--primary button--full" %>
+        <% end %>
+      <% else %>
+        <div class="section-heading section-heading--compact">
+          <p class="eyebrow">관리자</p>
+          <h2>프로젝트 관리</h2>
+        </div>
+
+        <p class="admin-login__description">프로젝트를 추가하거나 삭제하려면 관리자 키를 입력하세요.</p>
+
+        <%= form_with url: admin_session_path, class: "project-form admin-login" do |form| %>
+          <div class="field">
+            <%= form.label :admin_key, "관리자 키" %>
+            <%= form.password_field :admin_key, required: true, autocomplete: "current-password" %>
+          </div>
+
+          <%= form.submit "관리자 로그인", class: "button button--primary button--full" %>
+        <% end %>
       <% end %>
     </div>
 
@@ -90,9 +113,11 @@
                 <h3><%= project.title %></h3>
               </div>
 
-              <%= button_to "삭제", project_path(project), method: :delete,
-                    class: "text-button",
-                    form: { data: { turbo_confirm: "이 프로젝트를 삭제할까요?" } } %>
+              <% if portfolio_admin? %>
+                <%= button_to "삭제", project_path(project), method: :delete,
+                      class: "text-button",
+                      form: { data: { turbo_confirm: "이 프로젝트를 삭제할까요?" } } %>
+              <% end %>
             </div>
 
             <div class="project-card__description"><%= simple_format(project.description) %></div>
@@ -124,7 +149,9 @@
     <% else %>
       <div class="empty-state">
         <strong>아직 등록된 프로젝트가 없습니다.</strong>
-        <p>위 폼에서 첫 프로젝트와 결과 파일을 등록해 보세요.</p>
+        <% if portfolio_admin? %>
+          <p>위 폼에서 첫 프로젝트와 결과 파일을 등록해 보세요.</p>
+        <% end %>
       </div>
     <% end %>
   </div>

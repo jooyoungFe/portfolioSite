@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_action :require_portfolio_admin!, only: %i[create destroy]
   before_action :set_project, only: :destroy
 
   def index

@@ -12,6 +12,18 @@
   border-top: 2px solid $ink;
 }
 
+.admin-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.admin-login__description {
+  margin: 0 0 22px;
+  color: $muted;
+}
+
 .upload-guide {
   position: sticky;
   top: 92px;
@@ -44,6 +56,7 @@
   }
 
   input[type="text"],
+  input[type="password"],
   textarea {
     width: 100%;
     padding: 12px 13px;

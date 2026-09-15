@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   get "/career", to: "pages#career", as: :career
   get "/skills", to: "pages#skills", as: :skills
 
+  resource :admin_session, only: %i[create destroy]
   resources :projects, only: %i[index create destroy]
 end

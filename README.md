@@ -50,17 +50,26 @@ bin/rails db:migrate
 실행합니다.
 
 ```bash
-bin/dev
+PORTFOLIO_ADMIN_KEY="충분히-길고-추측하기-어려운-키" bin/dev
 ```
 
 `bin/dev`가 없는 환경이면 두 터미널에서 각각 실행할 수 있습니다.
 
 ```bash
-bin/rails server
+PORTFOLIO_ADMIN_KEY="충분히-길고-추측하기-어려운-키" bin/rails server
 bin/rails dartsass:watch
 ```
 
 접속 주소는 기본적으로 `http://localhost:3000` 입니다.
+
+## 관리자 키
+
+프로젝트 추가와 삭제는 관리자 로그인 후에만 가능합니다. 관리자 키는 소스 코드에
+저장하지 않고 `PORTFOLIO_ADMIN_KEY` 환경 변수로 설정합니다. 로그인 상태는 브라우저
+세션에만 보관되며, 실제 키는 쿠키에 저장되지 않습니다.
+
+Render에서는 서비스의 Environment 메뉴에 `PORTFOLIO_ADMIN_KEY`를 Secret 값으로
+추가하세요. 키가 설정되지 않은 환경에서는 관리자 로그인이 차단됩니다.
 
 ## 수정할 부분
 
@@ -77,7 +86,8 @@ bin/rails dartsass:watch
 한 프로젝트에 최대 5개, 파일당 최대 20MB로 제한했습니다.
 개발 환경 파일은 Rails의 `storage/` 아래에 저장됩니다.
 
-공개 서버에 배포할 경우에는 로그인/관리자 인증을 추가하는 편이 안전합니다. 현재 구조는 포트폴리오 과제 및 로컬 데모를 기준으로 해서 누구나 프로젝트 등록과 삭제를 할 수 있습니다.
+방문자는 등록된 프로젝트와 첨부파일을 볼 수 있지만, 프로젝트 등록과 삭제는
+`PORTFOLIO_ADMIN_KEY`로 로그인한 관리자만 할 수 있습니다.
 
 ## Render 배포
 

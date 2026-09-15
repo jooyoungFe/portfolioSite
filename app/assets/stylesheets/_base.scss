@@ -135,6 +135,12 @@ h3 {
   color: #b6e2c8;
   background: #17271e;
   font-weight: 700;
+
+  &--alert {
+    color: #f0aaa5;
+    border-color: #713b38;
+    background: #2a1717;
+  }
 }
 
 @media (max-width: 640px) {
